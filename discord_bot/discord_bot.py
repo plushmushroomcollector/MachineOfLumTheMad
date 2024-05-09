@@ -7,7 +7,7 @@ class ConfigError(Exception): pass
 class PluginDirectoryError(Exception): pass
 class PluginError(Exception): pass
 
-class My_Bot(Bot):
+class MyBot(Bot):
     INTENTS = Intents.default()
     INTENTS.members = True
     INTENTS.message_content = True

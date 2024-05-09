@@ -1,7 +1,6 @@
 import discord
 from discord import Intents
 from config import CONFIG
-from plugins.administrative_tools import administrative_tools
 from plugins.manifest import MANIFEST
 from plugins.manifest import IMPORT_LIST
 import datetime
@@ -20,9 +19,9 @@ def is_admin(func):
         return decorated
 
 def run_bot():
-    from discord_bot import My_Bot
+    from discord_bot import MyBot
 
-    my_bot = My_Bot(CONFIG['DISCORDAPPKEY'], CONFIG, command_prefix=CONFIG['COMMAND_PREFIX'])
+    my_bot = MyBot(CONFIG['DISCORDAPPKEY'], CONFIG, command_prefix=CONFIG['COMMAND_PREFIX'])
     
     @my_bot.command(name='plugin-load', aliases=[])
     @is_admin
