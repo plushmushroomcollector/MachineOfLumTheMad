@@ -56,6 +56,10 @@ def run_bot():
         plugin_name = ' '.join(plugin_name)
         await ctx.send(my_bot.cogs.get(plugin_name).help)
 
+    @my_bot.command(name='git-source', aliases=[])
+    async def git_source(ctx):
+        await ctx.author.send('https://github.com/plushmushroomcollector/MachineOfLumTheMad')
+
     @my_bot.event
     async def on_ready():
         print(f'We have logged in as {my_bot.user}')
