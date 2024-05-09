@@ -19,7 +19,7 @@ def is_admin(func):
         return decorated
 
 def run_bot():
-    from discord_bot import MyBot
+    from discord_bot.DiscordBot import MyBot
 
     my_bot = MyBot(CONFIG['DISCORDAPPKEY'], CONFIG, command_prefix=CONFIG['COMMAND_PREFIX'])
     
