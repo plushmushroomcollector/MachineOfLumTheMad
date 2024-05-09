@@ -24,7 +24,8 @@ class administrative_tools(commands.Cog, name='Admin Tools'):
 
     @property
     def help():
-        return 'TEST HELP'
+        #TODO: finish the help information
+        return ''
     
     def make_datetime_readable_full(self, my_datetime : datetime.datetime):
         formated_date = datetime.datetime.strptime(my_datetime.strftime("%m/%d/%Y, %H:%M:%S"),"%m/%d/%Y, %H:%M:%S")
