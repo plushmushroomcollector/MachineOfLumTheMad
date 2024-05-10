@@ -56,17 +56,23 @@ def run_bot():
     @is_admin
     async def plugin_reload(ctx, *plugin_name : str):
         plugin_name = ' '.join(plugin_name)
-        await my_bot.remove_cog(plugin_name)
-        await ctx.send(f'plugin: {plugin_name} was unloaded')
-        plugin_module = importlib.import_module(f'{CONFIG['PLUGINS_DIR']}.{MANIFEST[plugin_name]}')
-        plugin_class = getattr(plugin_module, MANIFEST[plugin_name])
-        await my_bot.add_cog(plugin_class(my_bot))
-        await ctx.send(f'plugin: {plugin_name} was reloaded')
+        if plugin_name in my_bot.cogs:
+            await my_bot.remove_cog(plugin_name)
+            await ctx.send(f'plugin: {plugin_name} was unloaded')
+            plugin_module = importlib.import_module(f'{CONFIG['PLUGINS_DIR']}.{MANIFEST[plugin_name]}')
+            plugin_class = getattr(plugin_module, MANIFEST[plugin_name])
+            await my_bot.add_cog(plugin_class(my_bot))
+            await ctx.send(f'plugin: {plugin_name} was reloaded')
+        else:
+            await ctx.send(f'{plugin_name} is not loaded')
 
     @my_bot.command(name='plugin-help', aliases=[])
     async def plugin_help(ctx, *plugin_name : str):
         plugin_name = ' '.join(plugin_name)
-        await ctx.send(my_bot.cogs.get(plugin_name).help)
+        if plugin_name in my_bot.cogs:
+            await ctx.send(my_bot.cogs.get(plugin_name).help)
+        else:
+            await ctx.send(f'{plugin_name} is not loaded')
 
     @my_bot.command(name='git-source', aliases=[])
     async def git_source(ctx):

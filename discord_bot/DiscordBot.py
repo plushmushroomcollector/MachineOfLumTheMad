@@ -14,7 +14,9 @@ class MyBot(Bot):
     INTENTS.reactions = True
     INTENTS.dm_messages = True
     INTENTS.dm_reactions = True
-    key = ""
+    INTENTS.voice_states = True
+    key = ''
+    config = None
 
     def __init__(self, key, config_file, *args, **kwargs):
         super().__init__(
