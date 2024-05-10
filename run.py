@@ -3,8 +3,7 @@ from discord import Intents
 from config import CONFIG
 from plugins.manifest import MANIFEST
 from plugins.manifest import IMPORT_LIST
-import datetime
-import importlib
+import sys, importlib
 
 import functools as ft
 
@@ -27,10 +26,24 @@ def run_bot():
     @is_admin
     async def plugin_load(ctx, *plugin_name : str):
         plugin_name = ' '.join(plugin_name)
-        plugin_module = importlib.import_module(f'{CONFIG['PLUGINS_DIR']}.{MANIFEST[plugin_name]}')
-        plugin_class = getattr(plugin_module, MANIFEST[plugin_name])
-        await my_bot.add_cog(plugin_class(my_bot))
-        await ctx.send(f'plugin: {plugin_name} was loaded')
+        
+        if not plugin_name in MANIFEST:
+            await ctx.send(f'plugin: {plugin_name} was not found in the manifest')
+            return
+        else:
+            plugin_module = None
+            try:
+                plugin_module = importlib.import_module(f'{CONFIG['PLUGINS_DIR']}.{MANIFEST[plugin_name]}')
+            except:
+                plugin_module= None
+            
+            if plugin_module is None:
+                await ctx.send(f'plugin: {plugin_name} was not found in the plugins folder or the wrong plugins folder is listed in the configuration file')
+                return
+            else:
+                plugin_class = getattr(plugin_module, MANIFEST[plugin_name])
+                await my_bot.add_cog(plugin_class(my_bot))
+                await ctx.send(f'plugin: {plugin_name} was loaded')
 
     @my_bot.command(name='plugin-remove', aliases=['plugin-unload'])
     @is_admin
@@ -58,6 +71,13 @@ def run_bot():
     @my_bot.command(name='git-source', aliases=[])
     async def git_source(ctx):
         await ctx.author.send('https://github.com/plushmushroomcollector/MachineOfLumTheMad')
+
+    @my_bot.command(name='refresh-manifest', aliases=[])
+    async def refresh_manifest(ctx):
+        #TODO: fix this functionality
+        importlib.reload(sys.modules['plugins.manifest'])
+        from plugins.manifest import MANIFEST
+        ctx.send('manifest has been refreshed')
 
     @my_bot.event
     async def on_ready():
