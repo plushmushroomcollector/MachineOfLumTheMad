@@ -80,8 +80,7 @@ def run_bot():
 
     @my_bot.command(name='refresh-manifest', aliases=[])
     async def refresh_manifest(ctx):
-        #TODO: fix this functionality
-        importlib.reload(sys.modules['plugins.manifest'])
+        importlib.reload('plugins.manifest')
         from plugins.manifest import MANIFEST
         ctx.send('manifest has been refreshed')
 
