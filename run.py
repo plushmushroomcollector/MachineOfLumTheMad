@@ -79,6 +79,7 @@ def run_bot():
         await ctx.author.send('https://github.com/plushmushroomcollector/MachineOfLumTheMad')
 
     @my_bot.command(name='refresh-manifest', aliases=[])
+    @is_admin
     async def refresh_manifest(ctx):
         importlib.reload('plugins.manifest')
         from plugins.manifest import MANIFEST
